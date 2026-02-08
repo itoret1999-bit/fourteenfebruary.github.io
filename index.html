@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Валентинка для тебя</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Dancing Script', cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(45deg, #ffafbd, #ffc3a0);
+            color: #5a003a;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: background 0.5s;
+            overflow-x: hidden;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 0, 100, 0.6);
+            animation: float 5s infinite linear;
+            z-index: 0;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(255, 0, 100, 0.2);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border: 8px solid #ff4d94;
+        }
+        
+        h1 {
+            color: #ff0066;
+            margin-bottom: 20px;
+            font-size: 3.2rem;
+            text-shadow: 2px 2px 4px rgba(255, 0, 100, 0.2);
+        }
+        
+        h2 {
+            color: #ff4d94;
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+        }
+        
+        .warning {
+            background-color: #ffe6f0;
+            border: 3px dashed #ff4d94;
+            color: #b30047;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .content {
+            margin: 30px 0;
+            text-align: left;
+            background-color: rgba(255, 230, 240, 0.5);
+            padding: 25px;
+            border-radius: 15px;
+        }
+        
+        .content p {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            line-height: 1.8;
+        }
+        
+        .valentine-button {
+            background: linear-gradient(to right, #ff0066, #ff4d94);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 0, 100, 0.4);
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .valentine-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(255, 0, 100, 0.5);
+        }
+        
+        .valentine-button:active {
+            transform: translateY(2px);
+        }
+        
+        .valentine-button:before {
+            content: "❤️";
+            position: absolute;
+            left: -30px;
+            transition: all 0.5s;
+        }
+        
+        .valentine-button:hover:before {
+            left: 20px;
+        }
+        
+        .valentine-button:after {
+            content: "❤️";
+            position: absolute;
+            right: -30px;
+            transition: all 0.5s;
+        }
+        
+        .valentine-button:hover:after {
+            right: 20px;
+        }
+        
+        .scary-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        /* ИЗМЕНЕНИЕ: изображение на весь экран */
+        .scary-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            filter: brightness(0.9) contrast(1.2);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); filter: brightness(1) contrast(1); }
+            50% { transform: scale(1.02); filter: brightness(1.1) contrast(1.3); }
+            100% { transform: scale(1); filter: brightness(1) contrast(1); }
+        }
+        
+        .scary-sound {
+            display: none;
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 1003;
+            display: none;
+            transition: all 0.3s;
+        }
+        
+        .close-button:hover {
+            background-color: rgba(255, 0, 100, 0.7);
+            transform: rotate(90deg);
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            background-color: #fff0f7;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+            font-size: 1.1rem;
+            border-left: 5px solid #ff4d94;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            margin-top: 30px;
+            color: #ff4d94;
+            font-size: 1rem;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px dotted #ff4d94;
+        }
+        
+        .scary-message {
+            color: #ff0066;
+            font-size: 5rem;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px red, 0 0 60px #ff0000;
+            animation: flicker 0.1s infinite;
+            font-family: 'Arial Black', sans-serif;
+            z-index: 1002;
+            position: relative;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            border: 3px solid #ff0066;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        
+        .heart-decoration {
+            position: absolute;
+            font-size: 40px;
+            z-index: 0;
+        }
+        
+        .heart1 {
+            top: 20px;
+            left: 20px;
+            color: #ff4d94;
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        .heart2 {
+            bottom: 20px;
+            right: 20px;
+            color: #ff0066;
+            animation: heartbeat 1.5s infinite reverse;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .love-letter {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ffd6e0" d="M20,10 Q50,5 80,10 L90,30 Q95,50 90,70 L80,90 Q50,95 20,90 L10,70 Q5,50 10,30 Z"/></svg>') no-repeat center;
+            background-size: contain;
+            padding: 40px;
+            margin: 20px 0;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .letter-text {
+            font-size: 1.5rem;
+            color: #5a003a;
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        .signature {
+            margin-top: 30px;
+            font-size: 2rem;
+            color: #ff0066;
+            font-weight: bold;
+        }
+        
+        /* Новый стиль для страшных изображений */
+        .scary-image.scary-mode {
+            animation: pulse 0.3s infinite alternate;
+            filter: brightness(0.8) contrast(1.5) hue-rotate(90deg);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .valentine-button {
+                padding: 15px 30px;
+                font-size: 1.4rem;
+            }
+            
+            .scary-message {
+                font-size: 3rem;
+                padding: 15px;
+            }
+            
+            .letter-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Плавающие сердечки -->
+    <div id="heartsContainer"></div>
+    
+    <div class="container">
+        <div class="heart-decoration heart1">❤️</div>
+        <div class="heart-decoration heart2">❤️</div>
+        
+        <h1>С Днём Святого Валентина!</h1>
+        <p style="font-size: 1.6rem;">Этот сайт создан специально для тебя, дорогой друг!</p>
+        
+        <div class="love-letter">
+            <div class="letter-text">
+                Я хочу сказать тебе кое-что
+                <br><br>
+                Ты - самый удивительный человек в моей жизни! Каждый день с тобой наполнен счастьем и радостью.
+                <br><br>
+                Нажми на кнопку ниже, чтобы узнать, что я приготовил для тебя! Не забудь включить звук !!!
+            </div>
+        </div>
+        
+        <button class="valentine-button" id="triggerButton">
+            Раскрыть мои чувства
+        </button>
+        
+    </div>
+    
+    <!-- Скрытые элементы для сюрприза -->
+    <div class="scary-overlay" id="scaryOverlay">
+        <div class="scary-message" id="scaryMessage">ЛЮБЛЮ ТЕБЯ!</div>
+        <img class="scary-image" id="scaryImage" src="images.jpg" alt="Сюрприз с признанием в любви">
+    </div>
+    
+    <button class="close-button" id="closeButton">✕</button>
+    
+    <audio class="scary-sound" id="scarySound" preload="auto">
+        <source src="fsdsdfhh.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Альтернативный страшный звук (если нужен настоящий скример) -->
+    <audio class="scary-sound" id="scarySound2" preload="auto">
+        <source src="fsdsdfhh.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const triggerButton = document.getElementById('triggerButton');
+            const scaryOverlay = document.getElementById('scaryOverlay');
+            const scarySound = document.getElementById('scarySound');
+            const scarySound2 = document.getElementById('scarySound2');
+            const closeButton = document.getElementById('closeButton');
+            const scaryImage = document.getElementById('scaryImage');
+            const scaryMessage = document.getElementById('scaryMessage');
+            const body = document.body;
+            const heartsContainer = document.getElementById('heartsContainer');
+            
+            let isScaryActive = false;
+            let isRealScareMode = false; // Режим настоящего скримера
+            
+            // Создаем плавающие сердечки
+            function createHearts() {
+                const heartCount = 15;
+                for (let i = 0; i < heartCount; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
+                    heartsContainer.appendChild(heart);
+                }
+            }
+            
+            // Загрузка звуков заранее
+            scarySound.load();
+            scarySound2.load();
+            
+            // Список страшных изображений для скримера
+            const scaryImages = [
+                "https://i.imgur.com/5Z3W7yK.png", // Страшное лицо
+                "https://i.imgur.com/XF0hPvn.png", // Романтичное (текущее)
+                "https://i.imgur.com/n1v7WfQ.jpg", // Другое страшное
+                "https://i.imgur.com/xF1qP3M.jpg"  // Еще одно
+            ];
+            
+            // Список страшных сообщений
+            const scaryMessages = [
+                "БУ!",
+                "СЮРПРИЗ!",
+                "Я ЗДЕСЬ!",
+                "ПРИВЕТ!",
+                "ЛЮБЛЮ ТЕБЯ!"
+            ];
+            
+            // Функция для активации сюрприза
+            function activateSurprise() {
+                if (isScaryActive) return;
+                
+                isScaryActive = true;
+                
+                // Иногда включаем настоящий скример (30% вероятность)
+                isRealScareMode = Math.random() < 0.3;
+                
+                if (isRealScareMode) {
+                    // Настоящий скример
+                    const randomImageIndex = Math.floor(Math.random() * (scaryImages.length - 1));
+                    scaryImage.src = scaryImages[randomImageIndex];
+                    scaryImage.classList.add('scary-mode');
+                    
+                    const randomMessageIndex = Math.floor(Math.random() * (scaryMessages.length - 1));
+                    scaryMessage.textContent = scaryMessages[randomMessageIndex];
+                    scaryMessage.style.color = "#ff0000";
+                    scaryMessage.style.textShadow = "0 0 30px #ff0000, 0 0 60px #ff0000";
+                    
+                    // Воспроизводим страшный звук
+                    scarySound2.currentTime = 0;
+                    scarySound2.volume = 0.8;
+                    scarySound2.play().catch(e => {
+                        console.log("Автовоспроизведение звука заблокировано браузером");
+                    });
+                    
+                    // Вибрация (если поддерживается)
+                    if (navigator.vibrate) {
+                        navigator.vibrate([500, 200, 500, 200, 500]);
+                    }
+                } else {
+                    // Романтичный сюрприз
+                    scaryImage.src = scaryImages[1]; // Романтичное изображение
+                    scaryImage.classList.remove('scary-mode');
+                    
+                    scaryMessage.textContent = "ЛЮБЛЮ ТЕБЯ!";
+                    scaryMessage.style.color = "#ff0066";
+                    scaryMessage.style.textShadow = "0 0 30px red, 0 0 60px #ff0000";
+                    
+                    // Воспроизводим звук сердцебиения
+                    scarySound.currentTime = 0;
+                    scarySound.volume = 0.7;
+                    scarySound.play().catch(e => {
+                        console.log("Автовоспроизведение звука заблокировано браузером");
+                    });
+                    
+                    // Легкая вибрация (если поддерживается)
+                    if (navigator.vibrate) {
+                        navigator.vibrate([200, 100, 200]);
+                    }
+                }
+                
+                // Показываем сюрприз
+                scaryOverlay.style.display = 'flex';
+                closeButton.style.display = 'block';
+                
+                // Меняем фон body на темный
+                body.style.background = isRealScareMode ? '#000' : 'linear-gradient(45deg, #33001b, #99004d)';
+                
+                // Добавляем больше сердечек (только для романтичного режима)
+                if (!isRealScareMode) {
+                    for (let i = 0; i < 10; i++) {
+                        const heart = document.createElement('div');
+                        heart.classList.add('heart');
+                        heart.innerHTML = '❤️';
+                        heart.style.left = Math.random() * 100 + 'vw';
+                        heart.style.animationDelay = Math.random() * 2 + 's';
+                        heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                        heart.style.color = '#ff0066';
+                        heartsContainer.appendChild(heart);
+                    }
+                }
+                
+                // Блокируем прокрутку
+                document.body.style.overflow = 'hidden';
+                
+                // Автоматическое закрытие через разное время в зависимости от режима
+                const closeTime = isRealScareMode ? 4000 : 6000;
+                setTimeout(() => {
+                    deactivateSurprise();
+                }, closeTime);
+            }
+            
+            // Функция для деактивации сюрприза
+            function deactivateSurprise() {
+                scaryOverlay.style.display = 'none';
+                closeButton.style.display = 'none';
+                scarySound.pause();
+                scarySound.currentTime = 0;
+                scarySound2.pause();
+                scarySound2.currentTime = 0;
+                body.style.background = 'linear-gradient(45deg, #ffafbd, #ffc3a0)';
+                document.body.style.overflow = 'auto';
+                
+                // Задержка перед возможной повторной активацией
+                setTimeout(() => {
+                    isScaryActive = false;
+                }, 1000);
+            }
+            
+            // Обработчик для кнопки-триггера
+            triggerButton.addEventListener('click', function() {
+                // Меняем текст кнопки
+                const originalText = triggerButton.textContent;
+                triggerButton.textContent = "Моё сердце бьётся для тебя...";
+                triggerButton.disabled = true;
+                
+                // Добавляем сердечки вокруг кнопки
+                for (let i = 0; i < 5; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤️';
+                    heart.style.position = 'absolute';
+                    heart.style.left = (50 + (Math.random() * 40 - 20)) + '%';
+                    heart.style.top = '50%';
+                    heart.style.fontSize = '25px';
+                    heart.style.zIndex = '2';
+                    triggerButton.parentElement.appendChild(heart);
+                    
+                    // Анимация разлета сердечек
+                    setTimeout(() => {
+                        heart.style.transition = 'all 1s';
+                        heart.style.left = (Math.random() * 100) + 'vw';
+                        heart.style.top = '-100px';
+                        heart.style.opacity = '0';
+                        
+                        // Удаляем сердечко после анимации
+                        setTimeout(() => {
+                            if (heart.parentElement) {
+                                heart.parentElement.removeChild(heart);
+                            }
+                        }, 1000);
+                    }, 100);
+                }
+                
+                // Задержка перед активацией сюрприза (1-3 секунды)
+                const delay = Math.random() * 2000 + 1000;
+                
+                setTimeout(() => {
+                    activateSurprise();
+                    
+                    // Возвращаем кнопку в исходное состояние через 3 секунды после сюрприза
+                    setTimeout(() => {
+                        triggerButton.textContent = originalText;
+                        triggerButton.disabled = false;
+                    }, 3000);
+                }, delay);
+            });
+            
+            // Обработчик для кнопки закрытия
+            closeButton.addEventListener('click', deactivateSurprise);
+            
+            // Также закрываем сюрприз при нажатии Escape
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && isScaryActive) {
+                    deactivateSurprise();
+                }
+            });
+            
+            // Случайный сюрприз при попытке уйти со страницы (редко)
+            window.addEventListener('mouseleave', function(event) {
+                if (event.clientY < 0 && Math.random() > 0.8 && !isScaryActive) {
+                    activateSurprise();
+                }
+            });
+            
+            // Создаем плавающие сердечки при загрузке
+            createHearts();
+            
+            // Милое сообщение в консоли
+            console.log("%c❤️ Любовь в воздухе! ❤️", "color: #ff0066; font-size: 18px; font-weight: bold;");
+            console.log("%cЭтот сайт создан с любовью для особенного человека!", "color: #ff4d94; font-size: 14px;");
+            console.log("%c⚠️ Внимание: на сайте есть сюрприз!", "color: #ff0000; font-size: 12px;");
+        });
+    </script>
+</body>
+</html>
