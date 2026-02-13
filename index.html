@@ -355,14 +355,14 @@
         </div>
         
         <button class="valentine-button" id="triggerButton">
-            Раскрыть мои чувства
+           ТЫКНИ
         </button>
         
     </div>
     
     <!-- Скрытые элементы для сюрприза -->
     <div class="scary-overlay" id="scaryOverlay">
-        <div class="scary-message" id="scaryMessage">БУУУУУ!!!!!</div>
+        <div class="scary-message" id="scaryMessage"></div>
         <img class="scary-image" id="scaryImage" src="img/images.jpg" alt="Сюрприз">
     </div>
     
@@ -463,7 +463,7 @@
                     scaryImage.src = scaryImages[1]; // Романтичное изображение
                     scaryImage.classList.remove('scary-mode');
                     
-                    scaryMessage.textContent = "ЛЮБЛЮ ТЕБЯ!";
+                    scaryMessage.textContent = "БУ!!";
                     scaryMessage.style.color = "#ff0066";
                     scaryMessage.style.textShadow = "0 0 30px red, 0 0 60px #ff0000";
                     
@@ -597,15 +597,12 @@
             // Создаем плавающие сердечки при загрузке
             createHearts();
             
-            // Милое сообщение в консоли
-            console.log("%c❤️ Любовь в воздухе! ❤️", "color: #ff0066; font-size: 18px; font-weight: bold;");
-            console.log("%cЭтот сайт создан с любовью для особенного человека!", "color: #ff4d94; font-size: 14px;");
-            console.log("%c⚠️ Внимание: на сайте есть сюрприз!", "color: #ff0000; font-size: 12px;");
         });
     </script>
 </body>
 
 </html>
+
 
 
 
